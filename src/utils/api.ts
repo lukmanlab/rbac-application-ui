@@ -1,0 +1,1 @@
+export const apiEndpoint = import.meta.env.VITE_USER_API_HOST
