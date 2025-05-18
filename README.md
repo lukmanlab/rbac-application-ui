@@ -20,9 +20,11 @@ Example Role Based Access Control Application, that support multi tenants.
 
 ![list-role](./readme/list-role.png)
 
+![list-resource](./readme/list-role-options.png)
+
 ## UI - List Resources
 
-![list-resource](./readme/list-role-options.png)
+![list-resource](./readme/list-resource.png)
 
 ## UI - Example Dialog
 
