@@ -1,11 +1,19 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import type { Tenant } from "./tenantSlice"
 import { apiEndpoint } from "@/utils/api"
+import { getAccessToken } from "@/utils/localStorage"
 
 export const tenantApiSlice = createApi({
   reducerPath: "tenantApi",
   baseQuery: fetchBaseQuery({
     baseUrl: apiEndpoint,
+    prepareHeaders: (headers) => {
+      const token = getAccessToken()
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`)
+      }
+      return headers
+    },
   }),
   endpoints: (builder) => ({
     getAllTenant: builder.query({

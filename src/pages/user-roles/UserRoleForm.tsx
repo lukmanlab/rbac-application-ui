@@ -18,7 +18,7 @@ export default function UserRoleForm({ form, users, onSubmitUser, closeRef }: Us
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmitUser)} className="space-y-4">
-      <FormField
+        <FormField
           control={form.control}
           name="userId"
           render={({ field }) => {

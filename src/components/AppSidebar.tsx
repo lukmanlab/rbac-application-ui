@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom"
 const items = [
   {
     title: "User",
-    url: "/",
+    url: "/user",
     icon: UserRoundCog,
   },
   {

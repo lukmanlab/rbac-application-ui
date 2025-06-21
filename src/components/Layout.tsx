@@ -1,26 +1,18 @@
 import { useAppDispatch } from "@/states/hooks"
 import { useEffect } from "react"
-import { LoadingBar, showLoading } from "react-redux-loading-bar"
+import { LoadingBar } from "react-redux-loading-bar"
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query/react"
 import type { SerializedError } from "@reduxjs/toolkit"
-import { toast } from "sonner"
 import { Toaster } from "./ui/sonner"
 import { SidebarProvider, SidebarTrigger } from "./ui/sidebar"
 import { AppSidebar } from "./AppSidebar"
+import { showLoading } from "react-redux-loading-bar"
+import useErrorMessage from "@/hooks/use-error-message"
 
 type Props = {
   main?: React.ReactNode
   isLoading?: boolean
   onError?: FetchBaseQueryError | SerializedError
-}
-
-function getErrorMessage(error: FetchBaseQueryError | SerializedError): string {
-  if ("status" in error) {
-    const errData = error.data as { message?: string } | undefined
-    return errData?.message ?? `Request failed with status ${error.status}`
-  } else {
-    return error.message ?? "An unknown error occurred"
-  }
 }
 
 export default function Layout({
@@ -29,21 +21,18 @@ export default function Layout({
   onError
 }: Props) {
   const dispatch = useAppDispatch()
+  const {
+    isLoadingRefreshToken,
+    showErrorToast
+  } = useErrorMessage()
 
   useEffect(() => {
-    if (isLoading) dispatch(showLoading())
-  }, [isLoading, dispatch])
+    if (isLoading || isLoadingRefreshToken) dispatch(showLoading())
+  }, [isLoading, isLoadingRefreshToken, dispatch])
 
   useEffect(() => {
     if (onError) {
-      const message = getErrorMessage(onError)
-      toast("Please wait, there is Error from Backend", {
-        description: message,
-        action: {
-          label: "Close",
-          onClick: () => console.log("close is clicked")
-        }
-      })
+      showErrorToast(onError)
     }
   }, [onError])
 
@@ -57,7 +46,7 @@ export default function Layout({
           {main}
         </main>
       </SidebarProvider>
-      <Toaster duration={1000} position="top-right" />
+      <Toaster duration={2000} position="top-right" />
     </>
   )
 }

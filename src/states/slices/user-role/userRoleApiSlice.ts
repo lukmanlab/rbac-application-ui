@@ -1,11 +1,19 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import type { AddUserRoleResponse, UserRole } from "./userRoleSlice"
 import { apiEndpoint } from "@/utils/api"
+import { getAccessToken } from "@/utils/localStorage"
 
 export const userRoleApiSlice = createApi({
   reducerPath: "userRoleApi",
   baseQuery: fetchBaseQuery({
     baseUrl: apiEndpoint,
+    prepareHeaders: (headers) => {
+      const token = getAccessToken()
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`)
+      }
+      return headers
+    },
   }),
   endpoints: (builder) => ({
     getAllUserRole: builder.query({

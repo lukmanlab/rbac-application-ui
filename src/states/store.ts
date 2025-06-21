@@ -19,11 +19,13 @@ import { rolePermissionApiSlice } from "./slices/role-permission/rolePermissionA
 import { rolePermissionSlice } from "./slices/role-permission/rolePermissionSlice"
 import { userRoleApiSlice } from "./slices/user-role/userRoleApiSlice"
 import { userRoleSlice } from "./slices/user-role/userRoleSlice"
+import { loginApiSlice } from "./slices/login/loginApiSlice"
 
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
 const rootReducer = combineSlices({
+  [loginApiSlice.reducerPath]: loginApiSlice.reducer,
   [userApiSlice.reducerPath]: userApiSlice.reducer,
   [userSlice.reducerPath]: userSlice.reducer,
   [tenantApiSlice.reducerPath]: tenantApiSlice.reducer,
@@ -56,6 +58,7 @@ export const makeStore = (preloadedState?: Partial<RootState>) => {
     // and other useful features of `rtk-query`.
     middleware: getDefaultMiddleware => {
       return getDefaultMiddleware().concat(
+        loginApiSlice.middleware,
         userApiSlice.middleware,
         tenantApiSlice.middleware,
         roleApiSlice.middleware,

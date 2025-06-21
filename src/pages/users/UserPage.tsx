@@ -2,7 +2,7 @@ import { DataTable } from "@/components/DataTable"
 import Layout from "@/components/Layout"
 import { Button } from "@/components/ui/button"
 import { useDeleteUserMutation, useGetAllUserQuery } from "@/states/slices/user/userApiSlice"
-import { selectAllUser, setAllUser, type UserResponse } from "@/states/slices/user/userSlice"
+import { selectAllUser, setAllUser, type User } from "@/states/slices/user/userSlice"
 import { parseDate } from "@/utils/formatDate"
 import {
   DropdownMenu,
@@ -32,9 +32,9 @@ function UserPage() {
   const dispatch = useAppDispatch()
   const users = useAppSelector(selectAllUser)
 
-  const [deleteUser] = useDeleteUserMutation()
+  const [deleteUser, { error: errorDelete }] = useDeleteUserMutation()
 
-  const columns: ColumnDef<UserResponse>[] = [
+  const columns: ColumnDef<User>[] = [
     {
       accessorKey: "email",
       header: ({ column }) => {
@@ -139,7 +139,7 @@ function UserPage() {
           )}
         </div>
       }
-      onError={error}
+      onError={error || errorDelete}
     />
   )
 }
